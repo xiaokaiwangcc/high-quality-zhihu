@@ -5,10 +5,14 @@
     "description": "只显示包含图片的知乎回答",
     "permissions": [
         "activeTab",
-        "scripting"
+        "scripting",
+        "downloads",
+        "storage"
     ],
     "host_permissions": [
-        "*://*.zhihu.com/*"
+        "*://*.zhihu.com/*",
+        "*://*.cloudflare.com/*",
+        "*://*.zhimg.com/*"
     ],
     "action": {
         "default_popup": "popup.html",

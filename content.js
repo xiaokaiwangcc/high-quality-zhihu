@@ -1,5 +1,9 @@
+let filterEnabled = true;
+
 // 处理页面上的回答
 function processAnswers() {
+    if (!filterEnabled) return;
+
     // 获取所有回答容器
     const answers = document.querySelectorAll('.List-item, .AnswerItem');
     
@@ -14,9 +18,31 @@ function processAnswers() {
     });
 }
 
+// 显示所有回答
+function showAllAnswers() {
+    const answers = document.querySelectorAll('.List-item, .AnswerItem');
+    answers.forEach(answer => {
+        answer.style.display = '';
+    });
+}
+
+// 监听来自popup的消息
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'setFilterState') {
+        filterEnabled = request.enabled;
+        if (filterEnabled) {
+            processAnswers();
+        } else {
+            showAllAnswers();
+        }
+    }
+});
+
 // 创建一个观察器来处理动态加载的内容
 const observer = new MutationObserver((mutations) => {
-    processAnswers();
+    if (filterEnabled) {
+        processAnswers();
+    }
 });
 
 // 开始观察页面变化
